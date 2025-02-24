@@ -4,6 +4,8 @@ import com.bridgelabz.employeepayrollapp.dto.EmployeeDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+
+
 @Entity
 @Table(name = "employees")
 @Getter
@@ -28,4 +30,5 @@ public class Employee {
         this.name = employeeDTO.getName();
         this.salary = employeeDTO.getSalary();
     }
+
 }
