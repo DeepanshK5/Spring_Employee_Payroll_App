@@ -17,9 +17,9 @@ public class EmployeePayrollController {
 
     @Autowired
     private EmployeeService employeeService;
-    
+
     @PostMapping("/create")
-    public Employee createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public Employee createEmployee( @Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Creating new employee: {}", employeeDTO);
         return employeeService.saveEmployee(employeeDTO);
     }
