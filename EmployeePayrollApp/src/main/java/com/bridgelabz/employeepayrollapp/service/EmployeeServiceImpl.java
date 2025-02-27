@@ -20,6 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> getAllEmployees() {
+        log.info("Fetching all employees from database");
         return employeeRepository.findAll();
     }
 
@@ -31,23 +32,30 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee saveEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee(employeeDTO);
+        Employee employee = convertDTOtoModel(employeeDTO);
+        log.info("Saving new employee: {}", employee);
         return employeeRepository.save(employee);
     }
 
     @Override
     public Employee updateEmployee(Long id, EmployeeDTO employeeDTO) {
-        Employee employee = employeeRepository.findById(id)
+        Employee existingEmployee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
-        employee.setName(employeeDTO.getName());
-        employee.setSalary(employeeDTO.getSalary());
-        return employeeRepository.save(employee);
+        existingEmployee.setName(employeeDTO.getName());
+        existingEmployee.setSalary(employeeDTO.getSalary());
+        log.info("Updating employee: {}", existingEmployee);
+        return employeeRepository.save(existingEmployee);
     }
 
     @Override
     public void deleteEmployee(Long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
+        log.warn("Deleting employee with ID: {}", id);
         employeeRepository.delete(employee);
+    }
+
+    private Employee convertDTOtoModel(EmployeeDTO employeeDTO) {
+        return new Employee(employeeDTO);
     }
 }

@@ -12,40 +12,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employeepayrollservice")
-@Slf4j  // Lombok Logging
+@Slf4j
 public class EmployeePayrollController {
 
     @Autowired
     private EmployeeService employeeService;
 
     @PostMapping("/create")
-    public Employee createEmployee( @Valid @RequestBody EmployeeDTO employeeDTO) {
+    public Employee createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Creating new employee: {}", employeeDTO);
         return employeeService.saveEmployee(employeeDTO);
-    }
-
-    @GetMapping("/get")
-    public List<Employee> getAllEmployees() {
-        log.info("Fetching all employees");
-        return employeeService.getAllEmployees();
-    }
-
-    @GetMapping("/get/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) {
-        log.info("Fetching employee with ID: {}", id);
-        return employeeService.getEmployeeById(id).orElse(null);
     }
 
     @PutMapping("/update/{id}")
     public Employee updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Updating employee with ID: {}", id);
         return employeeService.updateEmployee(id, employeeDTO);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteEmployee(@PathVariable Long id) {
-        log.warn("Deleting employee with ID: {}", id);
-        employeeService.deleteEmployee(id);
-        return "Deleted Employee with ID: " + id;
     }
 }
